@@ -11,11 +11,7 @@ class CatController extends Controller
      */
     public function index()
     {
-
-        // $url = 'http://localhost/css/style.css';
-        // $url = asset('css/style.css');
-        // dd($url);
-        // dd('hello cat index');
+      
         return view('cat.index');
     }
 
@@ -24,6 +20,10 @@ class CatController extends Controller
      */
     public function create()
     {
+        // dd('hello cat create action');
+        $url = route('cats.store');
+        dd($url);
+
         return view('cat.create');
     }
 
