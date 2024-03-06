@@ -48,23 +48,23 @@
                     <td>1</td>
                     <td>Amy</td>
                     <td>                        
-                        <a href="{{route('cats.edit', ['cat' => 1])}}">Edit123</a> &nbsp;&nbsp;&nbsp;
+                        <a href="{{route('cats.edit', ['cat' => 1])}}">Edit</a> &nbsp;&nbsp;&nbsp;
                         <a href="http://">Del</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>1</td>
-                    <td>Amy</td>
+                    <td>2</td>
+                    <td>bob</td>
                     <td>
-                        <a href="http://">Edit</a> &nbsp;&nbsp;&nbsp;
+                        <a href="{{route('cats.edit', ['cat' => 2])}}">Edit</a> &nbsp;&nbsp;&nbsp;
                         <a href="http://">Del</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>1</td>
-                    <td>Amy</td>
+                    <td>3</td>
+                    <td>cat</td>
                     <td>
-                        <a href="http://">Edit</a> &nbsp;&nbsp;&nbsp;
+                        <a href="{{route('cats.edit', ['cat' => 3])}}">Edit</a> &nbsp;&nbsp;&nbsp;
                         <a href="http://">Del</a>
                     </td>
                 </tr>
