@@ -11,7 +11,11 @@ class CatController extends Controller
      */
     public function index()
     {
-      
+        // $url = route('cats.edit', ['id' => 1]); 
+        $url = route('cats.edit', ['cat' => 1]);
+        dd($url);
+
+
         return view('cat.index');
     }
 
@@ -29,11 +33,12 @@ class CatController extends Controller
      */
     public function store(Request $request)
     {
-
         // dd($request);
         $input = $request->except('_token');
-        dd($input);
-        dd('hello cat store');
+        // die();
+        // dd($input);
+        // dd('hello cat store');
+        return redirect()->route('cats.index');
     }
 
     /**
@@ -49,7 +54,7 @@ class CatController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        dd("Hello $id");
     }
 
     /**
