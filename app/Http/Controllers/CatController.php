@@ -11,6 +11,10 @@ class CatController extends Controller
      */
     public function index()
     {
+
+        // $url = 'http://localhost/css/style.css';
+        // $url = asset('css/style.css');
+        // dd($url);
         // dd('hello cat index');
         return view('cat.index');
     }
@@ -63,7 +67,8 @@ class CatController extends Controller
         //
     }
 
-    public function excel(){
+    public function excel()
+    {
         dd('hello cats excel');
     }
 }
