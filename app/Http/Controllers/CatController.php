@@ -20,9 +20,6 @@ class CatController extends Controller
      */
     public function create()
     {
-        // dd('hello cat create action');
-        $url = route('cats.store');
-        dd($url);
 
         return view('cat.create');
     }
@@ -32,7 +29,11 @@ class CatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // dd($request);
+        $input = $request->except('_token');
+        dd($input);
+        dd('hello cat store');
     }
 
     /**
