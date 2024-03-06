@@ -17,6 +17,7 @@ use App\Http\Controllers\DogController;
 
 Route::get('/', function () {
     // return view('welcome');
+   
     return redirect('/cats');
 });
 
@@ -26,4 +27,11 @@ Route::resource('cats', CatController::class);
 
 // dogs 小狗
 Route::resource('dogs', DogController::class);
+
+Route::get('/child', function () {
+    return view('child');
+});
+
+
+
 
