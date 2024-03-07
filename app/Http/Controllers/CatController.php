@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Cat;
 
 class CatController extends Controller
 {
@@ -12,13 +13,24 @@ class CatController extends Controller
      */
     public function index()
     {
-        // $data['cats'] = DB::select('SELECT * FROM cats');
-        $data = DB::select('SELECT * FROM cats');
-        
-        // $data['dogs'] = DB::select('SELECT * FROM dogs');
-        // $data['test'] = '123';
-        // dd(gettype($data[0]));
+
+        $data = Cat::where('id', '>', 5)->orderByDesc('id')->get();
         return view('cat.index', ['data' => $data]);
+        // dd($data);
+
+        // foreach (Cat::all() as $item) {
+
+        //     echo $item->name;
+        // }
+        // return view('cat.index');
+
+        // $data['cats'] = DB::select('SELECT * FROM cats');
+        // $data = DB::select('SELECT * FROM cats');
+
+        // // $data['dogs'] = DB::select('SELECT * FROM dogs');
+        // // $data['test'] = '123';
+        // // dd(gettype($data[0]));
+
         // return view('cat.index', ['data' => $data, 'test' => $test]);
 
 
@@ -38,7 +50,6 @@ class CatController extends Controller
         // dd($url);
 
 
-        return view('cat.index');
     }
 
     /**
