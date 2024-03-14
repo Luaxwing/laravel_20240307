@@ -19,6 +19,9 @@
         <div class="container-fluid">
             <ul class="navbar-nav">
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('students.index') }}">Students</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('cats.index') }}">Cats</a>
                 </li>
                 <li class="nav-item">
@@ -32,7 +35,6 @@
         // dd($test);
         // dd($data);
         // $test = $data['test'];
-
     @endphp
 
 
@@ -47,8 +49,8 @@
                 <tr>
                     <th>id</th>
                     <th>name</th>
-                    <th>mobile_student_id</th>
-                    <th>mobile_mobile</th>
+                    <th>mobile</th>
+                    <th>love</th>
                     <th>operate</th>
                 </tr>
             </thead>
@@ -62,14 +64,37 @@
                             {{ $item->name }}
                         </td>
                         <td>
-                            {{ $item->mobile->student_id }}
+                            {{ $item->mobileRelation->mobile ?? '' }}
                         </td>
                         <td>
-                            {{ $item->mobile->mobile }}
+                            @php
+                                // foreach ($item->loveRelations as $key => $value) {
+                                //     echo "$value->love<br>";
+                                // }
+                            @endphp
+
+                            @foreach ($item->loveRelations as $value)
+                                {{"$value->love"}}
+                                <br>
+                            @endforeach
                         </td>
                         <td>
-                            <a href="{{ route('students.edit', ['student' => $item->id ]) }}">Edit</a> &nbsp;&nbsp;&nbsp;
-                            <a href="http://">Del</a>
+                            {{-- {{ route('students.edit', ['student' => $item->id ]) }} --}}
+
+                            {{-- <a href="http://localhost/students/{{$item->id}}/edit ">self-edit</a> --}}
+                            {{-- <a href="{{ route('students.edit') }}">edit</a> --}}
+                            {{-- <a href="{{ route('students.edit', ['student' => $item->id ]) }}">Edit</a> &nbsp;&nbsp;&nbsp; --}}
+
+                            <form action="{{ route('students.destroy', ['student' => $item->id]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <a class="btn btn-warning"
+                                    href="{{ route('students.edit', ['student' => $item->id]) }}">Edit</a>
+                                &nbsp;&nbsp;&nbsp;
+                                {{-- <a href="{{ route('students.destroy', ['student' => $item->id ]) }}">Del</a> --}}
+                                <button type="submit" class="btn btn-danger">del</button>
+                            </form>
+
                         </td>
                     </tr>
                 @endforeach

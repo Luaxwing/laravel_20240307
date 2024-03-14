@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Mobile;
+use App\Models\Love;
 use Illuminate\Http\Request;
 
 
@@ -15,6 +17,26 @@ class StudentController extends Controller
     {
 
         $data = Student::get();
+
+
+        $data = Student::with('mobileRelation')->with('loveRelations')->get();
+        // foreach ($data as $key => $value) {
+        //     // $data[0]
+        //     //loveRelations 1
+        //     //fetchAll
+        //     //foreach
+        //     echo ("$value->name<br>");
+        //     // $data[1]
+        //     //loveRelations 3
+        //     //fetchAll
+        //     //foreach
+
+        //     foreach ($value->loveRelations as $key2 => $value2) {
+        //         echo ("&nbsp;&nbsp;&nbsp;&nbsp;$value2->love <br>");
+        //     }
+        // }
+
+        // dd($data[1]->loveRelations);
         return view('student.index', ['data' => $data]);
     }
 
@@ -23,7 +45,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('student.create');
     }
 
     /**
@@ -31,7 +53,36 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $input = $request->except('_token');
+        $loves = $input['loves'];
+        $loveArr = explode(",", $loves);
+        // dd($loveArr);
+
+        // student
+        $data = new Student;
+        $data->name = $input['name'];
+        $data->save();
+
+        // mobile
+        $id = $data->id;
+        $item = new Mobile;
+        $item->student_id = $id;
+        $item->mobile = $input['mobile'];
+        $item->save();
+
+        // loves
+        $id = $data->id;
+        foreach ($loveArr as $key => $value) {
+            $itemLove = new Love;
+            $itemLove->student_id = $id;
+            $itemLove->love = $value;
+            $itemLove->save();
+        }
+
+
+
+        return redirect()->route('students.index');
     }
 
     /**
@@ -47,7 +98,27 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        // dd("Hello students - $student Edit");
+        $id = $student->id;
+        $data = Student::where('id', $id)->with('mobileRelation')->with('loveRelations')->first();
+        // $data['loves'] = 'php,laravel,js';
+
+        //relation to arry
+        $loveArr = [];
+        foreach ($data->loveRelations as $key => $value) {
+            array_push($loveArr, $value->love);
+        }
+        // dd($loveArr);
+
+        // array to string
+        $loves = implode(",", $loveArr);
+        // dd($loves);
+
+        // data['loves']
+        $data['loves'] = $loves;
+        // dd($data);
+
+        return view('student.edit', ['data' => $data]);
     }
 
     /**
@@ -55,7 +126,50 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        // $input = $request->all();
+        $input = $request->except('_token', '_method');
+        $loves = $input['loves'];
+        $loveArr = explode(",", $loves);
+        // dd($input);
+        // dd($loveArr);
+
+        // update students
+        $id = $student->id;
+        $data = Student::where('id', $id)->first();
+        $data->name = $input['name'];
+        $data->save();
+
+        // update mobiles => del students and insert mobiles
+        // 方法二 
+        // 子表刪除 再新增        
+        Mobile::where('student_id', $id)->delete();
+
+        // 手機
+        $item = new Mobile;
+        $item->student_id = $id;
+        $item->mobile = $input['mobile'];
+        $item->save();
+
+        // loves
+        // delete loves
+        Love::where('student_id', $student->id)->delete();
+
+        // add love
+        foreach ($loveArr as $key => $value) {
+            $itemLove = new Love;
+            $itemLove->student_id = $id;
+            $itemLove->love = $value;
+            $itemLove->save();
+        }
+
+        // 方法一
+        // $data = Mobile::where('student_id', $id)->first();
+        // $data->mobile = $input['mobile'];
+        // $data->save();
+
+        return redirect()->route('students.index');
+
+        // dd($input);
     }
 
     /**
@@ -63,6 +177,21 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+
+        // delete loves
+        Love::where('student_id', $student->id)->delete();
+
+        // delete mobiles
+        Mobile::where('student_id', $student->id)->delete();
+
+        // delete students
+        Student::where('id', $student->id)->delete();
+
+
+
+
+
+
+        return redirect()->route('students.index');
     }
 }
